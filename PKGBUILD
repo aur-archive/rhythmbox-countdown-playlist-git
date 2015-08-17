@@ -1,0 +1,28 @@
+# Maintainer: peace4all <markspost at rocketmail dot com>
+
+pkgname=rhythmbox-countdown-playlist-git
+_gitname="countdown-playlist"
+pkgver=7fe21d0
+pkgrel=1
+pkgdesc="Plugin to create playlists from your music collection using keywords for a defined duration"
+url="https://github.com/fossfreedom/countdown-playlist"
+arch=('i686' 'x86_64')
+license=('GPLv3')
+makedepends=('git')
+depends=('rhythmbox>=3.0')
+source=("$_gitname::git+https://github.com/fossfreedom/countdown-playlist.git")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "${srcdir}/${_gitname}"
+  git describe --always | sed 's|-|.|g'
+}
+
+package() {
+  cd "${srcdir}/${_gitname}"
+  mkdir -p "$pkgdir/usr/lib/rhythmbox/plugins/${_gitname}"
+  mv README.md README
+  mv LICENSE.txt LICENSE
+  mv countdown_playlist.plugin3 countdown_playlist.plugin
+  cp -R {*.py,*.plugin,README,LICENSE} "$pkgdir/usr/lib/rhythmbox/plugins/${_gitname}/"
+}
